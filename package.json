@@ -1,0 +1,27 @@
+{
+  "name": "open_in_colab",
+  "version": "1.0.0",
+  "description": "This is a simple Chrome extension that, when clicked while viewing a Jupyter notebook on GitHub, will open that notebook in [Google Colab](https://colab.research.google.com/).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/googlecolab/open_in_colab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/googlecolab/open_in_colab/issues"
+  },
+  "homepage": "https://github.com/googlecolab/open_in_colab#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.326",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}

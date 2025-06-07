@@ -1,5 +1,5 @@
 {
-  "name": "Open in Colab",
+  "name": "Open in Colab (Modified)",
   "description": "Open a Github-hosted notebook in Google Colab",
   "version": "1.2.0",
   "author": {
@@ -21,7 +21,8 @@
     "default_title": "Open notebook in Google Colab"
   },
   "background": {
-    "service_worker": "service_worker_compiled.js"
+    "service_worker": "service_worker.js",
+    "type": "module"
   },
-  "permissions": ["activeTab"]
+  "permissions": ["activeTab", "scripting"]
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {githubToColabUrl} from './parse';
+import {githubToColabUrl} from './parse.js';
 
 // Details for calls to chrome.action.setPopup; see
 // https://developer.chrome.com/docs/extensions/reference/api/action#method-setPopup.
@@ -36,7 +36,7 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
     console.warn('Open in Colab was invoked without a URL.');
     return;
   }
-  const colabUrl = githubToColabUrl(tab.url);
+  const colabUrl = await githubToColabUrl(tab.url);
   if (!colabUrl) {
     // Set and show a helpful popup page when the extension icon is clicked on
     // an invalid URL, then unset it in case the next click is valid.

@@ -14,6 +14,25 @@
  * limitations under the License.
  */
 
+async function extractBranchName(): Promise<string | undefined> {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab.id) return undefined;
+  
+  const results = await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => {
+      // GitHubのブランチ名を取得する例
+      const button = document.getElementById('branch-picker-repos-header-ref-selector') as HTMLButtonElement;
+      const label = button?.getAttribute('aria-label');
+      const branchName = label?.split(' ')[0];
+      
+      return branchName;
+    }
+  });
+  
+  return results?.[0]?.result;
+}
+
 const COLAB_BASE_URL = 'https://colab.research.google.com/';
 const GITHUB_REPO_RE = /^https?:\/\/github\.com\/(.+)\/(.*\.ipynb)$/;
 const GITHUB_GIST_RE =
@@ -27,10 +46,15 @@ const GITHUB_GIST_RE =
  * @return For valid GitHub URLs, a link to open the notebook in Colab,
  * otherwise null.
  */
-export function githubToColabUrl(githubUrl: string): string|null {
+export async function githubToColabUrl(githubUrl: string): Promise<string|null> {
   const repoMatch = GITHUB_REPO_RE.exec(githubUrl);
   if (repoMatch) {
-    return COLAB_BASE_URL + ['github', repoMatch[1], repoMatch[2]].join('/');
+    const branchName = await extractBranchName();
+    if (branchName) {
+      return COLAB_BASE_URL + ['github', repoMatch[1].replace(branchName, encodeURIComponent(branchName)), repoMatch[2]].join('/');
+    } else {
+      return COLAB_BASE_URL + ['github', repoMatch[1], repoMatch[2]].join('/');
+    }
   }
   const gistMatch = GITHUB_GIST_RE.exec(githubUrl);
   if (gistMatch) {
